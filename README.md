@@ -1,5 +1,5 @@
-Dropwizard metrics captured using the Observer pattern in Java 8
-================================================================
+Dropwizard metrics with Java 8 and spring-boot
+==============================================
 
 Proof of concept for capturing application metrics using the Dropwizard metrics library.
 The Observer pattern is used to not pollute business domain code with Dropwizard metrics dependencies.
@@ -9,7 +9,14 @@ a scheduled task to make the project more fun to play with.
 
 ### running the project
 
-The easiest way to run the application is to use the maven spring boot plugin:
+This project contains a maven wrapper script which will download the correct maven version and run the default goal `spring-boot:run`
+
+
+> ./mvnw
+
+(on windows use mvnw.cmd)
+
+Or you can invoke the spring-boot run goal like this:
 
 > mvn spring-boot:run
 
@@ -49,13 +56,12 @@ If you run the project with docker-compose, it will enable a Graphite reporter i
 
 prerequisites:
 
-* a working docker environment
+* a working docker environment (`eval $(docker-machine env)`)
 * docker-compose command installed
-* don't forget to build a jar first, for example `mvn clean package`
+* don't forget to build a jar first, for example `mvn clean package docker:build`
 
-> docker-compose build
-
-> docker-compose up
+> docker-compose -f src/main/docker/docker-compose.yml build
+> docker-compose -f src/main/docker/docker-compose.yml up
 
 
 ### JMX
@@ -68,11 +74,12 @@ Something to note about the configuration, the JMXMP protocol is used instead of
 is easier to forward since it communicates over a single tcp port. Unlike rmi which create a random port by default.
 It is easier to configure jmxmp when running in a container, we only have to expose 1 port. Though
 when you want to show a remote jmx through jmxmp protocol you'll have to add an extra jar to the class
-path when using jvisualvm. otherwize it won't work.
+path when using jvisualvm &mdash; otherwise it won't work.
 
 #### use this when want to view the (remote) jmx when you started this app containerized (docker-compose up)
 
 > jvisualvm --cp:a jmxremote_optional-repackaged-4.1.1.jar
 
+(make sure you have this optional jar in current working dir, otherwise jvisualvm will start but you won't be able to add the jmx url')
 
 jmx connection url: `service:jmx:jmxmp://192.168.99.100:9875`
