@@ -1,37 +1,40 @@
 Dropwizard metrics with Java 8 and spring-boot
 ==============================================
 
-Proof of concept for capturing application metrics using the Dropwizard metrics library.
-The Observer pattern is used to not pollute business domain code with Dropwizard metrics dependencies.
+Proof of concept for capturing application metrics using the DropWizard metrics library.
+The Observer pattern is used to not pollute business domain code with DropWizard metrics dependencies.
 
 This project also uses spring and spring-boot but that's only to wire some components together and create
 a scheduled task to make the project more fun to play with.
 
 ### running the project
 
-This project contains a maven wrapper script which will download the correct maven version and run the default goal `spring-boot:run`
-
+ * Java 8 is required (obviously)
+ * Apache Maven 3 is required to build the project
+ 
+ If you don't have maven installed yet (or an older version ) you can use the maven wrapper script 
+ included in this project. It will download the correct maven version and run the default goal `spring-boot:run`
 
 > ./mvnw
 
-(on windows use mvnw.cmd)
+(on windows use `mvnw.cmd`)
 
 Or you can invoke the spring-boot run goal like this:
 
-> mvn spring-boot:run
+> mvn
 
-This application will start a scheduled task to randomly add or remove animals in the zoo. (each x seconds) And each y
-seconds, the dropwizard console reporter will print the state of the metrics to the console.
+This application will start a scheduled task that randomly adds or removes animals in a zoo. (each x seconds) And each y
+seconds, the DropWizard console reporter will print metrics to the console.
 
 ### package structure
 The package `net.eekie.metrics.zoo` contains the actual business code with metric capturing using observer pattern.
 This could be your business logic of your application. In this package we only enable sending metrics which are going
-to be handled by one or more listeners. (it's only about metrics and not dropwizard metric related yet)
+to be handled by one or more listeners. (it's only about metrics and not DropWizard metric related yet)
 
-The package `net.eekie.metrics.config` contain the config to instantiate an observable zoo with Listerner for
-capturing Dropwizard metrics. It's here that the Dropwizard magic happens.
+The package `net.eekie.metrics.config` contain the config to instantiate an observable zoo with Listener for
+capturing DropWizard metrics. It's here that the DropWizard magic happens.
 
-A Dropwizard console reporter is also configured to see the state of the metrics each y seconds. In a production
+A DropWizard console reporter is also configured to see the state of the metrics each y seconds. In a production
 environment you want to setup a Graphite reporter instead or something similar. (also see docker)
 
 
