@@ -19,7 +19,8 @@ a scheduled task to make the project more fun to play with.
 
 (on windows use `mvnw.cmd`)
 
-Or you can invoke the spring-boot run goal like this:
+The spring-boot goal will be run by default.
+If you already have maven installed you can of course just invoke: 
 
 > mvn
 
@@ -36,15 +37,24 @@ The package `net.eekie.metrics.config` contain the config to instantiate an obse
 capturing DropWizard metrics. It's here that the DropWizard magic happens.
 
 A DropWizard console reporter is also configured to see the state of the metrics each y seconds. In a production
-environment you want to setup a Graphite reporter instead or something similar. (also see docker)
+environment you want to setup the Graphite reporter, the Logstash reporter instead or something similar. (also see docker)
 
-Also a Slf4J Logstash reporter enabled by default which sends logging and metrics 
-to a logstash udp port. 
-Can can easily start up a jhispter console by cloning this repo https://github.com/jhipster/jhipster-console and running
-the docker compose. It is actually an ELK stack (Elastic Search, Logstash and Kibana). The logstash container will have
-port 5000 published and it is that port our application will try sending logs to. Check application.properties for proper
- configuration. Since we also enabled writing dropwizard metrics to the log files every x seconds. You will be able to create nice charts
-base on dropwizard metrics since all info is available in the logs.
+### Logstash reporting and ELK stack
+Also a Slf4J Logstash reporter enabled by default which sends logging to logstash. 
+Can can easily start up a jhispter console by cloning this repo [jhipster-console](https://github.com/jhipster/jhipster-console) and running
+ docker compose. It is actually an ELK stack (Elastic Search, Logstash and Kibana). The logstash container will have
+port 5000 published and it is that port our application will sends its logs to. Check application.properties for proper
+logstash configuration. Since we also enabled writing dropwizard metrics to the log files every x seconds. You will be 
+able to create nice charts based on dropwizard metrics since all metrics is available in the logs. (no graphite required)
+
+So you could go for graphite + grafana for the dasboards but you can instead only write some logs and metrics with them.
+
+I prefer the ELK stack since you can also query your logs. If you choose graphite you only will have metrics for charts.
+And probably in a production environment you don't want to send the to logstash directly on port 5000 (or you can take the risk if it is running on the same host)
+but you just want to write the logs to a file as you would do normally. From there another process sends them to logstash or directly to elastic search. 
+[Filebeat](https://www.elastic.co/products/beats/filebeat) can be used for this but that is out of the scope of this POC.
+
+
 
 
 ### Note about multi threading
