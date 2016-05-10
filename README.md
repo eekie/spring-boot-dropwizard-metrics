@@ -41,7 +41,7 @@ environment you want to setup the Graphite reporter, the Logstash reporter inste
 
 ### Logstash reporting and ELK stack
 Also a Slf4J Logstash reporter enabled by default which sends logging to logstash. 
-Can can easily start up a jhispter console by cloning this repo [jhipster-console](https://github.com/jhipster/jhipster-console) and running
+You can easily start up a jhispter console by cloning this repo [jhipster-console](https://github.com/jhipster/jhipster-console) and running
  docker compose. It is actually an ELK stack (Elastic Search, Logstash and Kibana). The logstash container will have
 port 5000 published and it is that port our application will sends its logs to. Check application.properties for proper
 logstash configuration. Since we also enabled writing dropwizard metrics to the log files every x seconds. You will be 
