@@ -28,14 +28,23 @@ seconds, the DropWizard console reporter will print metrics to the console.
 
 ### package structure
 The package `net.eekie.metrics.zoo` contains the actual business code with metric capturing using observer pattern.
-This could be your business logic of your application. In this package we only enable sending metrics which are going
-to be handled by one or more listeners. (it's only about metrics and not DropWizard metric related yet)
+This could be your business logic of your application. In this package we only implement an observable class to allow 
+adding listeners later to capture the actual metrics. It's only being able to expose the information through the form
+ of a listener and it is not DropWizard metric related yet.
 
 The package `net.eekie.metrics.config` contain the config to instantiate an observable zoo with Listener for
 capturing DropWizard metrics. It's here that the DropWizard magic happens.
 
 A DropWizard console reporter is also configured to see the state of the metrics each y seconds. In a production
 environment you want to setup a Graphite reporter instead or something similar. (also see docker)
+
+Also a Slf4J Logstash reporter enabled by default which sends logging and metrics 
+to a logstash udp port. 
+Can can easily start up a jhispter console by cloning this repo https://github.com/jhipster/jhipster-console and running
+the docker compose. It is actually an ELK stack (Elastic Search, Logstash and Kibana). The logstash container will have
+port 5000 published and it is that port our application will try sending logs to. Check application.properties for proper
+ configuration. Since we also enabled writing dropwizard metrics to the log files every x seconds. You will be able to create nice charts
+base on dropwizard metrics since all info is available in the logs.
 
 
 ### Note about multi threading
@@ -47,12 +56,16 @@ if your uses case needs it. Each choice has its pros and cons.
 As an example, in this project we execute all Listener logic in a separate thread. This extra thread is only created
 once when the application is started. See class `net.eekie.metrics.zoo.ObservableSubject` to how it can be done.
 
+Actually the dropwizard reporter is already executing it's logic in a separate thread so in this case it is obsolete to 
+create yet another thread. But if it is implemented in a framework or abstract class in this case, it's not a bad practice
+to already create the separate thread since the developers that will be using the abstract class and implement their own
+ listeners might put some slow logic in the listeners. And of course a separate thread does not protect you from everything.
 
 ## Docker
 
 If you run the project with docker-compose, it will enable a Graphite reporter in the application. Docker compose will
- also pull an image from the registry with Graphite and Grafana installed. You will be able to play live metrics the app
- is sending in a Grafana dashboard.
+ also pull an image from the registry with Graphite and Grafana installed. You will be able to play with live metrics 
+ the app is sending in a Grafana dashboard.
 
 
 ### running with docker-componse

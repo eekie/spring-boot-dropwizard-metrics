@@ -17,6 +17,7 @@
     <properties>
         <java.version>1.8</java.version>
         <metrics.version>3.1.2</metrics.version>
+        <logstash-logback-encoder.version>4.6</logstash-logback-encoder.version>
     </properties>
 
     <dependencies>
@@ -56,7 +57,25 @@
             <artifactId>jmxremote_optional-repackaged</artifactId>
             <version>4.1.1</version>
         </dependency>
-
+        <dependency>
+            <groupId>net.logstash.logback</groupId>
+            <artifactId>logstash-logback-encoder</artifactId>
+            <version>${logstash-logback-encoder.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>ch.qos.logback</groupId>
+                    <artifactId>logback-core</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>ch.qos.logback</groupId>
+                    <artifactId>logback-classic</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>ch.qos.logback</groupId>
+                    <artifactId>logback-access</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
     </dependencies>
 
     <build>
@@ -82,9 +101,9 @@
             <plugin>
                 <groupId>com.spotify</groupId>
                 <artifactId>docker-maven-plugin</artifactId>
-                <version>0.4.3</version>
+                <version>0.4.9</version>
                 <configuration>
-                    <imageName>dropwizard-metrics</imageName>
+                    <imageName>eekie/dropwizard-metrics</imageName>
                     <imageTags>
                         <imageTag>${project.version}</imageTag>
                         <imageTag>latest</imageTag>
