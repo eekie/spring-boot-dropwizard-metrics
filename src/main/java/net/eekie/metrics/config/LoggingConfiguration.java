@@ -3,6 +3,7 @@ package net.eekie.metrics.config;
 import ch.qos.logback.classic.AsyncAppender;
 import ch.qos.logback.classic.LoggerContext;
 import net.logstash.logback.appender.LogstashSocketAppender;
+import net.logstash.logback.stacktrace.ShortenedThrowableConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -44,10 +45,17 @@ public class LoggingConfiguration {
 
     public void addLogstashAppender() {
         log.info("Initializing Logstash logging");
-
         LogstashSocketAppender logstashAppender = new LogstashSocketAppender();
         logstashAppender.setName("LOGSTASH");
         logstashAppender.setContext(context);
+        ShortenedThrowableConverter shortenedThrowableConverter = new ShortenedThrowableConverter();
+        shortenedThrowableConverter.setMaxLength(2048);
+        shortenedThrowableConverter.setMaxDepthPerThrowable(30);
+        shortenedThrowableConverter.setRootCauseFirst(true);
+        shortenedThrowableConverter.setShortenedClassNameLength(20);
+        shortenedThrowableConverter.addExclude("sun\\.reflect\\..*\\.invoke.*");
+        shortenedThrowableConverter.addExclude("net\\.sf\\.cglib\\.proxy\\.MethodProxy\\.invoke");
+        logstashAppender.setThrowableConverter(shortenedThrowableConverter);
         String customFields = "{\"app_name\":\"" + appName + "\",\"app_port\":\"" + serverPort + "\"," +
             "\"instance_id\":\"" + instanceId + "\"}";
 

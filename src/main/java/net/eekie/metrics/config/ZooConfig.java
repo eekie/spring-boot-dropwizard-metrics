@@ -47,6 +47,9 @@ public class ZooConfig {
             public void onAnimalRemoved(Animal animal) {
                 animals.dec();
                 logger.debug("metric captured for animal removed '{}', current size: {}", animal.getId(), animals.getCount());
+                if (animals.getCount() == 0) {
+                    logger.error("woohoo, simulate an error", new RuntimeException("testing runtime exception"));
+                }
             }
 
         };
