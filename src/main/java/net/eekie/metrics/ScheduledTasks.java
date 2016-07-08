@@ -5,7 +5,6 @@ import net.eekie.metrics.zoo.Animal;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -39,9 +38,9 @@ public class ScheduledTasks {
 
     private void removeAnimalsRandomly() {
         List<Animal> animalsToRemove = zooConfig.zooWithAnimalCountMetricListener().getAnimals().stream().filter(animal -> randomNum.nextInt(2) == 1).collect(Collectors.toList());
-        if (animalsToRemove.size() > 0) {
+        if (!animalsToRemove.isEmpty()) {
             logger.info("removing {} animals", animalsToRemove.size());
-            animalsToRemove.forEach(animal -> zooConfig.zooWithAnimalCountMetricListener().removeAnimal(animal));
+            animalsToRemove.forEach(zooConfig.zooWithAnimalCountMetricListener()::removeAnimal);
         }
     }
 

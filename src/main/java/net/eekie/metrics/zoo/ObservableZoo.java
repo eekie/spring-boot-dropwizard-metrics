@@ -16,14 +16,14 @@ public class ObservableZoo extends ObservableSubject<ZooListener> {
         // Add the animal to the list of animals
         this.animals.add(animal);
         // Notify the list of registered listeners
-        this.notifyListeners((listener) -> listener.onAnimalAdded(animal));
+        this.notifyListeners(listener -> listener.onAnimalAdded(animal));
     }
 
     public void removeAnimal (Animal animal) {
         // Remove the animal from the list of animals
         this.animals.remove(animal);
         // Notify the list of registered listeners
-        this.notifyListeners((listener) -> listener.onAnimalRemoved(animal));
+        this.notifyListeners(listener -> listener.onAnimalRemoved(animal));
     }
 
 }

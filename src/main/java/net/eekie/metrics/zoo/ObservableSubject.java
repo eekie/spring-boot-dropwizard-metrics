@@ -11,9 +11,9 @@ import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.function.Consumer;
 
-abstract class ObservableSubject<ListenerType> {
+abstract class ObservableSubject<L> {
 
-    private List<ListenerType> listeners = new ArrayList<>();
+    private List<L> listeners = new ArrayList<>();
 
     private final ReadWriteLock readWriteLock = new ReentrantReadWriteLock(true);
     protected final Lock readLock = readWriteLock.readLock();
@@ -21,7 +21,7 @@ abstract class ObservableSubject<ListenerType> {
     final ExecutorService executor = Executors.newFixedThreadPool(1, new ThreadFactoryBuilder()
             .setNameFormat("metric-thread-%d").build());
 
-    public ListenerType registerListener (ListenerType listener) {
+    public L registerListener (L listener) {
         // Lock the list of listeners for writing
         this.writeLock.lock();
         try {
@@ -35,7 +35,7 @@ abstract class ObservableSubject<ListenerType> {
         return listener;
     }
 
-    public void notifyListeners (Consumer<? super ListenerType> algorithm) {
+    public void notifyListeners (Consumer<? super L> algorithm) {
         // Lock the list of listeners for reading
         this.readLock.lock();
         try {
