@@ -11,9 +11,8 @@ node ('linux'){
 
     echo "My branch is: ${env.BRANCH_NAME}"
 
-    if (env.BRANCH_NAME = 'master') {
-        //input 'Ready to go?'
-        echo "My branch is: ${env.BRANCH_NAME}"
+    if (env.BRANCH_NAME == 'master') {
+        input 'Ready to go?'
     }
 
     def mvnHome = tool 'Maven 3'
