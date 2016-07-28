@@ -29,7 +29,7 @@ node ('docker'){
 
     stage 'Build docker image'
     checkout scm
-    sh 'docker build -t eekie/dropwizard-metrics -f src/main/docker/Dockerfile' .
+    sh 'docker build -t eekie/dropwizard-metrics -f src/main/docker/Dockerfile .'
 
 }
 
