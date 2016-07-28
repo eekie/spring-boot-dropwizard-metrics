@@ -2,7 +2,7 @@ node ('linux'){
 
     stage 'Build and Test'
 //    env.PATH = "${tool 'Maven 3'}/bin:${env.PATH}"
-    checkout scm
+//    checkout scm
 
     def v = version()
     if (v) {
@@ -12,7 +12,7 @@ node ('linux'){
     echo "My branch is: ${env.BRANCH_NAME}"
 
     if (env.BRANCH_NAME == 'master') {
-        input 'Ready to go?'
+        input 'We are on master Ready to go?'
     }
 
     def mvnHome = tool 'Maven 3'
@@ -26,11 +26,10 @@ node ('linux'){
 }
 
 node ('docker'){
-
     stage 'Build docker image'
-    checkout scm
-    sh 'docker build -t eekie/dropwizard-metrics -f src/main/docker/Dockerfile .'
-
+    def mvnHome = tool 'Maven 3'
+    //checkout scm
+    sh "${mvnHome}/bin/mvn package docker:build"
 }
 
 def version() {
