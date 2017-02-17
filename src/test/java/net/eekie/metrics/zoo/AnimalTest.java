@@ -4,9 +4,6 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-/**
- * Created by tom on 26/07/16.
- */
 public class AnimalTest {
 
     @Test
@@ -14,4 +11,5 @@ public class AnimalTest {
         Animal animal = new Animal("1234");
         assertTrue(animal.getId().equals("1234"));
     }
+
 }

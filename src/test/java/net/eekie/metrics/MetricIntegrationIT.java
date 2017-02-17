@@ -3,16 +3,16 @@ package net.eekie.metrics;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.boot.test.IntegrationTest;
-import org.springframework.boot.test.OutputCapture;
-import org.springframework.boot.test.SpringApplicationConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.rule.OutputCapture;
+import org.springframework.test.context.junit4.SpringRunner;
+
 import static org.junit.Assert.*;
 import static org.hamcrest.Matchers.*;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(Application.class)
-@IntegrationTest({"scheduledtasks.addremoveanimals.fixedRate:100", "logging.level.net.eekie.metrics: DEBUG"})
+@RunWith(SpringRunner.class)
+@SpringBootTest(
+    properties = {"scheduledtasks.addremoveanimals.fixedRate:100", "logging.level.net.eekie.metrics: DEBUG"})
 public class MetricIntegrationIT {
 
     @Rule
